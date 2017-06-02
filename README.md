@@ -68,6 +68,13 @@ let properties = [
         ]
 ```
 
+##### Custom font
+```swift
+let customFonts = [
+            "textFont" : UIFont(name: "Papyrus", size: 14)!
+        ]
+```
+
 ##### Type of tab (Dynamic or fit screen)
 
 ```swift
@@ -79,7 +86,7 @@ let sizeProperties = [
 
 ##### Initialization each properties on create function
 ```swift
-self.create(tabView: tabView, containerView: containerView, tabModel: tabs, tabProperties: properties, tabSizeProperties: sizeProperties)
+self.create(tabView: tabView, containerView: containerView, tabModel: tabs, tabProperties: properties, tabSizeProperties: sizeProperties, tabCustomFont: customFonts)
 ```
 ## Author
 
