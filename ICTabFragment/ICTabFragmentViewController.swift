@@ -27,13 +27,15 @@ open class ICTabFragmentViewController: UIViewController {
     
     fileprivate var indicatorColorUnselected = UIColor.black
     
+    fileprivate var textFont: UIFont = UIFont.systemFont(ofSize: 12)
+    
     fileprivate var tabSize = ICTabSize.dynamic
     
     fileprivate var tabFitSize: CGFloat = 2
     
     internal var parentDelegate: ICTabParentProtocol?
     
-    public func create(tabView: UIView, containerView: UIView, tabModel: [ICTabModel], tabProperties: [String : UIColor]? = nil, tabSizeProperties: [String : Any]? = nil) {
+    public func create(tabView: UIView, containerView: UIView, tabModel: [ICTabModel], tabProperties: [String : UIColor]? = nil, tabSizeProperties: [String : Any]? = nil, tabCustomFont: [String : Any]? = nil) {
         
         self.tabs = tabModel
         
@@ -49,11 +51,16 @@ open class ICTabFragmentViewController: UIViewController {
             self.tabFitSize = CGFloat(sizeProperties["tabFitSize"] as! Int)
         }
         
+        if let customFont = tabCustomFont {
+            self.textFont = customFont["textFont"] as! UIFont
+        }
+        
         let collectionViewLayout = UICollectionViewFlowLayout()
         collectionViewLayout.itemSize = CGSize(width: 10, height: 10)
         collectionViewLayout.scrollDirection = UICollectionViewScrollDirection.horizontal
         collectionView = UICollectionView(frame: tabView.frame, collectionViewLayout: collectionViewLayout)
         collectionView.isScrollEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = UIColor.clear
         
         tabView.addSubview(collectionView)
@@ -108,6 +115,7 @@ extension ICTabFragmentViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ictabcollectionviewcell", for: indexPath) as! ICTabCollectionViewCell
         
         cell.tabNameLabel.text = tabs[indexPath.row].tabName
+        cell.tabNameLabel.font = self.textFont
         
         if tabs[indexPath.row].isSelected {
             cell.tabNameLabel.textColor = self.textColorSelected
