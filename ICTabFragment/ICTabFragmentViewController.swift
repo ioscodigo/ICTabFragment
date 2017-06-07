@@ -10,99 +10,121 @@ import UIKit
 
 public enum ICTabSize {
     case fit
+    
     case dynamic
 }
 
-open class ICTabFragmentViewController: UIViewController {
+internal protocol ICTabFragmentProtocol {
+    var textColorSelected: UIColor { get set }
     
-    fileprivate var collectionView: UICollectionView!
+    var textColorUnselected: UIColor { get set }
     
-    fileprivate lazy var tabs = [ICTabModel]()
+    var indicatorColorSelected: UIColor { get set }
     
-    fileprivate var textColorSelected = UIColor.blue
+    var indicatorHeight: CGFloat { get set }
     
-    fileprivate var textColorUnselected = UIColor.black
+    var indicatorTopSpace: CGFloat { get set }
     
-    fileprivate var indicatorColorSelected = UIColor.blue
+    var textFont: UIFont { get set }
     
-    fileprivate var indicatorColorUnselected = UIColor.black
+    var tabSize: ICTabSize { get set }
     
-    fileprivate var textFont: UIFont = UIFont.systemFont(ofSize: 12)
+    var tabFitSize: CGFloat { get set }
     
-    fileprivate var tabSize = ICTabSize.dynamic
+    var tabLineSpacing: CGFloat { get set }
     
-    fileprivate var tabFitSize: CGFloat = 2
+    var tabInterSpacing: CGFloat { get set }
+}
+
+open class ICTabFragmentViewController: NSObject, ICTabFragmentProtocol {
+    fileprivate var context: UIViewController
+    
+    fileprivate var tabs: [ICTabModel]
+    
+    fileprivate var tabView: UIView
+    
+    fileprivate var containerView: UIView
+    
+    fileprivate var collectionView: UICollectionView?
     
     internal var parentDelegate: ICTabParentProtocol?
     
-    public func create(tabView: UIView, containerView: UIView, tabModel: [ICTabModel], tabProperties: [String : UIColor]? = nil, tabSizeProperties: [String : Any]? = nil, tabCustomFont: [String : Any]? = nil) {
-        
-        self.tabs = tabModel
-        
-        if let properties = tabProperties {
-            self.textColorSelected = properties["textColorSelected"]!
-            self.textColorUnselected = properties["textColorUnselected"]!
-            self.indicatorColorSelected = properties["indicatorColorSelected"]!
-            self.indicatorColorUnselected = properties["indicatorColorUnselected"]!
-        }
-        
-        if let sizeProperties = tabSizeProperties {
-            self.tabSize = sizeProperties["tabSize"] as! ICTabSize
-            self.tabFitSize = CGFloat(sizeProperties["tabFitSize"] as! Int)
-        }
-        
-        if let customFont = tabCustomFont {
-            self.textFont = customFont["textFont"] as! UIFont
-        }
-        
+    open var textColorSelected: UIColor = UIColor.blue
+    
+    open var textColorUnselected: UIColor = UIColor.black
+    
+    open var indicatorColorSelected: UIColor = UIColor.blue
+    
+    open var indicatorHeight: CGFloat = 5
+    
+    open var indicatorTopSpace: CGFloat = 0
+    
+    open var textFont: UIFont = UIFont.systemFont(ofSize: 12)
+    
+    open var tabSize: ICTabSize = ICTabSize.dynamic
+    
+    open var tabFitSize: CGFloat = 1
+    
+    open var tabLineSpacing: CGFloat = 0
+    
+    open var tabInterSpacing: CGFloat = 0
+    
+    required public init(context: UIViewController, tabs: [ICTabModel], tabView: UIView, containerView: UIView) {
+        self.context = context
+        self.tabs = tabs
+        self.tabView = tabView
+        self.containerView = containerView
+    }
+}
+
+extension ICTabFragmentViewController {
+    public func create() {
         let collectionViewLayout = UICollectionViewFlowLayout()
         collectionViewLayout.itemSize = CGSize(width: 10, height: 10)
         collectionViewLayout.scrollDirection = UICollectionViewScrollDirection.horizontal
         collectionView = UICollectionView(frame: tabView.frame, collectionViewLayout: collectionViewLayout)
-        collectionView.isScrollEnabled = true
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = UIColor.clear
+        self.collectionView?.isScrollEnabled = true
+        self.collectionView?.showsHorizontalScrollIndicator = false
+        self.collectionView?.backgroundColor = UIColor.clear
         
-        tabView.addSubview(collectionView)
-        
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
-        collectionView.widthAnchor.constraint(equalTo: tabView.widthAnchor, multiplier: 1.0).isActive = true
-        collectionView.heightAnchor.constraint(equalTo: tabView.heightAnchor, multiplier: 1.0).isActive = true
-        collectionView.centerXAnchor.constraint(equalTo: tabView.centerXAnchor).isActive = true
-        collectionView.centerYAnchor.constraint(equalTo: tabView.centerYAnchor).isActive = true
-        
-        let nib = UINib(nibName: "ICTabCollectionViewCell", bundle: Bundle(for: ICTabCollectionViewCell.self))
-        collectionView.register(nib, forCellWithReuseIdentifier: "ictabcollectionviewcell")
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        
-        setupChildView(container: containerView)
+        if let cv = self.collectionView {
+            tabView.addSubview(cv)
+            
+            cv.translatesAutoresizingMaskIntoConstraints = false
+            
+            cv.widthAnchor.constraint(equalTo: tabView.widthAnchor, multiplier: 1.0).isActive = true
+            cv.heightAnchor.constraint(equalTo: tabView.heightAnchor, multiplier: 1.0).isActive = true
+            cv.centerXAnchor.constraint(equalTo: tabView.centerXAnchor).isActive = true
+            cv.centerYAnchor.constraint(equalTo: tabView.centerYAnchor).isActive = true
+            cv.register(ICTabCollectionViewCell.self, forCellWithReuseIdentifier: "ictabcollectionviewcell")
+            cv.delegate = self
+            cv.dataSource = self
+            
+            setupChildView()
+        }
     }
     
-    private func setupChildView(container: UIView){
+    private func setupChildView() {
         let vc = ICTabPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         vc.childDelegate = self
         
         var viewController = [UIViewController]()
-        var initialSelected = 0
         
         for (index, value) in tabs.enumerated() {
             viewController.append(value.tabView)
             
-            if value.isSelected {
-                initialSelected = index
+            if index == 0 {
+                value.isSelected = true
             }
         }
         
-        vc.initialSelected = initialSelected
         vc.listViewController = viewController
+        vc.context = self
         
-        addChildViewController(vc)
-        vc.view.frame = container.bounds
-        container.addSubview(vc.view)
-        vc.didMove(toParentViewController: self)
+        context.addChildViewController(vc)
+        vc.view.frame = self.containerView.bounds
+        self.containerView.addSubview(vc.view)
+        vc.didMove(toParentViewController: context)
     }
 }
 
@@ -116,6 +138,8 @@ extension ICTabFragmentViewController: UICollectionViewDataSource {
         
         cell.tabNameLabel.text = tabs[indexPath.row].tabName
         cell.tabNameLabel.font = self.textFont
+        cell.indicatorHeight = self.indicatorHeight
+        cell.indicatorTopSpace = self.indicatorTopSpace
         
         if tabs[indexPath.row].isSelected {
             cell.tabNameLabel.textColor = self.textColorSelected
@@ -157,6 +181,14 @@ extension ICTabFragmentViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: collectionView.frame.width / self.tabFitSize, height: collectionView.frame.height)
         }
     }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return self.tabLineSpacing
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return self.tabInterSpacing
+    }
 }
 
 extension ICTabFragmentViewController: ICTabChildProtocol {
@@ -167,10 +199,10 @@ extension ICTabFragmentViewController: ICTabChildProtocol {
         tabs[row].isSelected = true
         
         let indexPath = IndexPath(row: row, section: 0)
-        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        self.collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         
         if indexPath.row != previous {
-            collectionView.reloadItems(at: [IndexPath(row: previous, section: 0), indexPath])
+            collectionView?.reloadItems(at: [IndexPath(row: previous, section: 0), indexPath])
         }
     }
 }

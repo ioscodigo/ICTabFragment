@@ -12,7 +12,7 @@ class ICTabPageViewController: UIPageViewController {
     
     lazy var listViewController = [UIViewController]()
     
-    internal lazy var initialSelected = 0
+    internal var context: ICTabFragmentViewController?
     
     var childDelegate: ICTabChildProtocol?
     
@@ -22,9 +22,11 @@ class ICTabPageViewController: UIPageViewController {
         self.delegate = self
         self.dataSource = self
         
-        setViewControllers([listViewController[initialSelected]], direction: .forward, animated: false, completion: nil)
+        if let first = listViewController.first {
+            setViewControllers([first], direction: .forward, animated: false, completion: nil)
+        }
         
-        guard let parent = parent as? ICTabFragmentViewController else { return }
+        guard let parent = context else { return }
         parent.parentDelegate = self
     }
     

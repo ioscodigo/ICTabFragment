@@ -12,8 +12,6 @@ XCode 8.0
 ### Using CocoaPods
 
 ```ruby
-source 'https://github.com/ioscodigo/ICTabFragment.git'
-use_frameworks!
 pod 'ICTabFragment'
 ```
 
@@ -24,11 +22,6 @@ pod 'ICTabFragment'
 3. `Add UIView` that will use as container child ViewController
 4. `Create child ViewController` (more than 1 ViewController) don't forget to set identifier of each ViewController
 5. `Import ICTabFragment` to use ICTabFragment in your file.
-6. `Inherit ICTabFragmentViewController` on your parent ViewController
-7. `Define each tab name and viewcontroller` and also set isSelected to `false` except on first model set isSelected to `true`
-8. If you want to custom text color and indicator set properties of tab
-9. If you want to customize size tab set size properties of tab
-
 
 ### Example 
 
@@ -36,54 +29,58 @@ pod 'ICTabFragment'
 import UIKit
 import ICTabFragment
 
-class ViewController: ICTabFragmentViewController {
-    @IBOutlet weak var tabView: UIView!
-    @IBOutlet weak var containerView: UIView!
+class ViewController: UIViewController {
+@IBOutlet weak var tabView: UIView!
+@IBOutlet weak var containerView: UIView!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let tabs = [
-            ICTabModel(tabName: "One", tabView: storyboard?.instantiateViewController(withIdentifier: "FirstViewController") as! FirstViewController, isSelected: true),
-            ICTabModel(tabName: "Two", tabView: storyboard?.instantiateViewController(withIdentifier: "SecondViewController") as! SecondViewController, isSelected: false),
-            ICTabModel(tabName: "Three", tabView: storyboard?.instantiateViewController(withIdentifier: "ThirdViewController") as! ThirdViewController, isSelected: false)
-        ]
-        
-        self.create(tabView: tabView, containerView: containerView, tabModel: tabs)
-    }
+override func viewDidLoad() {
+super.viewDidLoad()
+
+let tabs = [
+ICTabModel(tabName: "One", tabView: storyboard?.instantiateViewController(withIdentifier: "FirstViewController") as! FirstViewController),
+ICTabModel(tabName: "Two", tabView: storyboard?.instantiateViewController(withIdentifier: "SecondViewController") as! SecondViewController),
+ICTabModel(tabName: "Three", tabView: storyboard?.instantiateViewController(withIdentifier: "ThirdViewController") as! ThirdViewController)
+]
+
+let tabFragment = ICTabFragmentViewController(context: self, tabs: tabs, tabView: viewTest, containerView: containerTest)
+tabFragment.create()
+}
 }
 ```
 
 ## Custom Properties
 
-If you want to custom tab menu then you can set properties and send to create method
-#####  custom text color and custom indicator color
+If you want to custom tab menu then you can set properties before create method was called
 
 ```swift
-let properties = [
-            "textColorSelected" : UIColor.blue,
-            "textColorUnselected" : UIColor.cyan,
-            "indicatorColorSelected" : UIColor.blue,
-            "indicatorColorUnselected" : UIColor.cyan
-        ]
+open var textColorSelected: UIColor
+
+open var textColorUnselected: UIColor
+
+open var indicatorColorSelected: UIColor
+
+open var indicatorHeight: CGFloat
+
+open var indicatorTopSpace: CGFloat
+
+open var textFont: UIFont
+
+open var tabSize: ICTabSize
+
+open var tabFitSize: CGFloat
+
+open var tabLineSpacing: CGFloat
+
+open var tabInterSpacing: CGFloat
 ```
 
-##### Type of tab (Dynamic or fit screen)
-
+then call create method
 ```swift
-let sizeProperties = [
-         "tabSize" : ICTabSize.fit, //Default is dynamic
-         "tabFitSize" : 3
-         ] as [String : Any]
-```
-
-##### Initialization each properties on create function
-```swift
-self.create(tabView: tabView, containerView: containerView, tabModel: tabs, tabProperties: properties, tabSizeProperties: sizeProperties)
+tabFragment.create()
 ```
 ## Author
 
-2017, Digital Khrisna Aurum
+2017, Digital Khrisna Aurum, digital@codigo.id
 
 ## License
 

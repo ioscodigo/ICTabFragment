@@ -11,11 +11,10 @@ import UIKit
 open class ICTabModel {
     var tabName: String
     var tabView: UIViewController
-    var isSelected: Bool
+    var isSelected: Bool = false
     
-    public init(tabName: String, tabView: UIViewController, isSelected: Bool) {
+    public init(tabName: String, tabView: UIViewController) {
         self.tabName = tabName
         self.tabView = tabView
-        self.isSelected = isSelected
     }
 }
