@@ -13,10 +13,6 @@
 		B7E082EE1EE08259007D2ADE /* ICTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E082E81EE08259007D2ADE /* ICTabModel.swift */; };
 		B7E082EF1EE08259007D2ADE /* ICTabPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E082E91EE08259007D2ADE /* ICTabPageViewController.swift */; };
 		B7E082F01EE08259007D2ADE /* ICTabProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E082EA1EE08259007D2ADE /* ICTabProtocol.swift */; };
-		B7E95EBE1EE7F1C90040E4D6 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = B7E95EBA1EE7F1C90040E4D6 /* README.md */; };
-		B7E95EBF1EE7F1C90040E4D6 /* ICTabFragment.podspec in Resources */ = {isa = PBXBuildFile; fileRef = B7E95EBB1EE7F1C90040E4D6 /* ICTabFragment.podspec */; };
-		B7E95EC01EE7F1C90040E4D6 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = B7E95EBC1EE7F1C90040E4D6 /* LICENSE */; };
-		B7E95EC11EE7F1C90040E4D6 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = B7E95EBD1EE7F1C90040E4D6 /* Podfile */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,10 +24,6 @@
 		B7E082E81EE08259007D2ADE /* ICTabModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICTabModel.swift; sourceTree = "<group>"; };
 		B7E082E91EE08259007D2ADE /* ICTabPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICTabPageViewController.swift; sourceTree = "<group>"; };
 		B7E082EA1EE08259007D2ADE /* ICTabProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICTabProtocol.swift; sourceTree = "<group>"; };
-		B7E95EBA1EE7F1C90040E4D6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		B7E95EBB1EE7F1C90040E4D6 /* ICTabFragment.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ICTabFragment.podspec; sourceTree = "<group>"; };
-		B7E95EBC1EE7F1C90040E4D6 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		B7E95EBD1EE7F1C90040E4D6 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,10 +40,6 @@
 		B7E082CF1EE08129007D2ADE = {
 			isa = PBXGroup;
 			children = (
-				B7E95EBA1EE7F1C90040E4D6 /* README.md */,
-				B7E95EBB1EE7F1C90040E4D6 /* ICTabFragment.podspec */,
-				B7E95EBC1EE7F1C90040E4D6 /* LICENSE */,
-				B7E95EBD1EE7F1C90040E4D6 /* Podfile */,
 				B7E082DB1EE08129007D2ADE /* ICTabFragment */,
 				B7E082DA1EE08129007D2ADE /* Products */,
 			);
@@ -157,9 +145,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7E95EC11EE7F1C90040E4D6 /* Podfile in Resources */,
-				B7E95EC01EE7F1C90040E4D6 /* LICENSE in Resources */,
-				B7E95EBF1EE7F1C90040E4D6 /* ICTabFragment.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,7 +155,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7E95EBE1EE7F1C90040E4D6 /* README.md in Sources */,
 				B7E082ED1EE08259007D2ADE /* ICTabFragmentViewController.swift in Sources */,
 				B7E082EE1EE08259007D2ADE /* ICTabModel.swift in Sources */,
 				B7E082EB1EE08259007D2ADE /* ICTabCollectionViewCell.swift in Sources */,

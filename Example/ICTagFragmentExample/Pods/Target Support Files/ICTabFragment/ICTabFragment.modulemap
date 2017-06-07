@@ -1,0 +1,6 @@
+framework module ICTabFragment {
+  umbrella header "ICTabFragment-umbrella.h"
+
+  export *
+  module * { export * }
+}
