@@ -11,5 +11,4 @@ Pod::Spec.new do |s|
   s.source = { :git => 'https://github.com/ioscodigo/ICTabFragment.git', :tag => '1.0.0'}
   s.framework = "UIKit"
   s.source_files = "ICTabFragment/**/*.{swift}"
-  s.resources = "ICTabFragment/**/*.{png,jpeg,jpg,storyboard,xib}"
 end
