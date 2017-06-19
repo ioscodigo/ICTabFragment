@@ -73,6 +73,7 @@ extension ICTabPageViewController: UIPageViewControllerDataSource{
         
         let currentIndex = listViewController.index(where: {$0 == pageViewController.viewControllers?.first})
         childDelegate?.didChildChangeFrame(currentIndex!)
+        childDelegate?.didChildCurrentView(listViewController[currentIndex!])
     }
 }
 
@@ -90,5 +91,6 @@ extension ICTabPageViewController: ICTabParentProtocol {
         
         let indexPath = IndexPath(row: row, section: 0)
         view.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        childDelegate?.didChildCurrentView(listViewController[row])
     }
 }

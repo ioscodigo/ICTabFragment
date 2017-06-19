@@ -14,4 +14,9 @@ protocol ICTabParentProtocol {
 
 protocol ICTabChildProtocol {
     func didChildChangeFrame(_ row: Int)
+    func didChildCurrentView(_ viewController: UIViewController)
+}
+
+public protocol ICTabFragmentDelegate {
+    func currentViewController(_ viewController: UIViewController)
 }

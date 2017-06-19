@@ -69,6 +69,8 @@ open class ICTabFragmentViewController: NSObject, ICTabFragmentProtocol {
     
     open var tabInterSpacing: CGFloat = 0
     
+    open var delegate: ICTabFragmentDelegate?
+    
     required public init(context: UIViewController, tabs: [ICTabModel], tabView: UIView, containerView: UIView) {
         self.context = context
         self.tabs = tabs
@@ -174,7 +176,7 @@ extension ICTabFragmentViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if self.tabSize == .dynamic {
             let heigth = (tabs[indexPath.row].tabName as NSString).size(attributes: nil).height + 10
-            let width = (tabs[indexPath.row].tabName as NSString).size(attributes: nil).width + 50
+            let width = (tabs[indexPath.row].tabName as NSString).size(attributes: nil).width + self.tabInterSpacing
             
             return CGSize(width: width, height: heigth)
         } else {
@@ -204,5 +206,9 @@ extension ICTabFragmentViewController: ICTabChildProtocol {
         if indexPath.row != previous {
             collectionView?.reloadItems(at: [IndexPath(row: previous, section: 0), indexPath])
         }
+    }
+    
+    func didChildCurrentView(_ viewController: UIViewController) {
+        delegate?.currentViewController(viewController)
     }
 }
