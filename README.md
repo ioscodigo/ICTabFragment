@@ -81,6 +81,21 @@ then call create method
 ```swift
     tabFragment.create()
 ```
+
+## Delegate
+you can call delegate to get current view on containerview
+
+```swift
+    tabFragment.delegate = self
+    
+    extension ViewController: ICTabFragmentDelegate {
+        func currentViewController(_ viewController: UIViewController) {
+            /*
+            *   Define your logic here
+            */
+        }
+    }
+```
 ## Author
 
 2017, Digital Khrisna Aurum, digital@codigo.id
